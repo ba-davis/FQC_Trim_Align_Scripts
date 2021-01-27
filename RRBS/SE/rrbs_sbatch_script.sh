@@ -69,3 +69,11 @@ bismark_methylation_extractor \
 --cytosine_report \
 --genome_folder $genome \
 $outdir_bis/$BAMFILE
+
+# Print Tool Versions
+echo "---TOOL-VERSIONS---"
+echo "$(fastqc --version)"
+echo "TrimGalore $(trim_galore --version)"
+echo "cutadapt $(cutadapt --version)"
+echo "$(bismark --version)"
+echo "Genome: $genome"
