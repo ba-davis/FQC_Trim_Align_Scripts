@@ -17,6 +17,13 @@ The scripts include:
 2. rnaseq_sbatch_script.sh - contains the SLURM sbatch variables, references args_file, contains code for executing FastQC, trimming, and aligning, outputs tool versions
 3. submit_script_rnaseq.sh - references and executes the above two scripts to submit jobs via SLURM with sbatch
   - takes as input in this order: path to folder containing raw fastq files, path to folder containing STAR indices for reference genome, path to gtf file for reference genome annotation
+  - example of execution:
+
+./submit_script_rnaseq.sh \
+  /path/to/raw_files/dir \
+  /path/to/reference_genome/star \
+  /path/to/annotation_file.gtf
+
 
 ## RRBS
 For RRBS (Reduced Representation Bisulfite Sequencing) projects, trimGalore is used as the trimming software and Bismark is used as the aligner.
