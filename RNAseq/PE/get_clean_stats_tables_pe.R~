@@ -1,0 +1,17 @@
+
+
+library(readxl)
+
+# function to get individual FQC, Trim, STAR txt files from full excel file
+# infile: PE FQC_Trim_Align full excel file
+
+get_indiv_qc_tables <- function(infile) {
+  # read in excel file
+  df <- as.data.frame(read_xlsx(infile))
+  # check ncol
+  if (ncol(df) != 29) {
+    print("Warning...infile does not have the expected 29 columns.")
+  }
+
+
+}

@@ -43,22 +43,17 @@ args_file=$dir/args_file
 # set variable "ARGS" to be the output of the correct line from args_file (matches SLURM_ARRAY_TASK_ID)
 ARGS=`head -$SLURM_ARRAY_TASK_ID $args_file | tail -1`
 # set variables based on the output of the line ARGS
-IFS=: read RAWFILE1 RAWFILE2 BASENAME TRIMFILE1 TRIMFILE2 <<< $ARGS
+IFS=: read RAWFILE1 BASENAME TRIMFILE1 <<< $ARGS
 
 # Run FastQC on Raw Files
 fastqc -o $outdir_fqc $inpath/$RAWFILE1
-fastqc -o $outdir_fqc $inpath/$RAWFILE2
 
 # Run Trimmomatic on each pair of files
 trimmomatic \
-  PE \
+  SE \
   -phred33 \
   $inpath/$RAWFILE1 \
-  $inpath/$RAWFILE2 \
-  $outdir_trim/out_paired_R1_$BASENAME.fastq.gz \
-  $outdir_trim/unpaired/out_unpaired_R1_$BASENAME.fastq.gz \
-  $outdir_trim/out_paired_R2_$BASENAME.fastq.gz \
-  $outdir_trim/unpaired/out_unpaired_R2_$BASENAME.fastq.gz \
+  $outdir_trim/$BASENAME.trimmed.fastq.gz \
   ILLUMINACLIP:/home/groups/hoolock2/u0/bd/bin/miniconda3/envs/RNAseq/share/trimmomatic-0.39-1/adapters/TruSeq3-PE-2.fa:2:30:10:8:true \
   LEADING:3 \
   TRAILING:3 \
@@ -73,7 +68,7 @@ fastqc -o $outdir_fqc_trimmed $outdir_trim/$TRIMFILE2
 STAR \
   --runThreadN 8 \
   --genomeDir $genome \
-  --readFilesIn $outdir_trim/$TRIMFILE1 $outdir_trim/$TRIMFILE2 \
+  --readFilesIn $outdir_trim/$TRIMFILE1 \
   --readFilesCommand zcat \
   --sjdbGTFfile $gtf \
   --outFileNamePrefix $outdir_star/$BASENAME.star. \
